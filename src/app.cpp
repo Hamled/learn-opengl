@@ -20,6 +20,7 @@ int main() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
   // Create the window
   GLFWwindow* window = glfwCreateWindow(640, 480, "Learn OpenGL", NULL, NULL);
