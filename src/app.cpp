@@ -1,12 +1,6 @@
 #include <iostream>
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-namespace {
-int with_window(std::function<  int(GLFWwindow*) > block);
-void glfw_error_callback(int error, const char* description);
-void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-}
+#include <app.h>
 
 int main() {
   glfwSetErrorCallback(glfw_error_callback);
