@@ -1,1 +1,5 @@
-# Nothing here yet!
+global_options(['-Wall', '-Werror', '-std=c++14'], lang='c++')
+
+glfw3 = pkgconfig_package('glfw3', version='>=3.0')
+
+executable('learn-ogl', files=['src/app.cpp'], packages=[glfw3])
