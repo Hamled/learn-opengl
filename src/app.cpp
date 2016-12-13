@@ -1,4 +1,5 @@
 #include <iostream>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 void glfw_error_callback(int error, const char* description);
@@ -20,6 +21,15 @@ int main() {
   GLFWwindow* window = glfwCreateWindow(640, 480, "Learn OpenGL", NULL, NULL);
   if(!window) {
     std::cout << "Unable to create OpenGL context!" << std::endl;
+    glfwTerminate();
+    return 1;
+  }
+
+  glfwMakeContextCurrent(window);
+
+  if(!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+    std::cout << "Unable to create OpenGL context!" << std::endl;
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 1;
   }

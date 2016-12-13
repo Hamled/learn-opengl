@@ -2,4 +2,13 @@ global_options(['-Wall', '-Werror', '-std=c++14'], lang='c++')
 
 glfw3 = pkgconfig_package('glfw3', version='>=3.0')
 
-executable('learn-ogl', files=['src/app.cpp'], packages=[glfw3])
+source_files = [
+  'src/app.cpp',
+  'src/glad/glad.c'
+]
+
+include_dirs = [
+  header_directory('include')
+]
+
+executable('learn-ogl', files=source_files, include=include_dirs, packages=[glfw3])
