@@ -3,7 +3,9 @@
 #include <glad/glad.h>
 #include <app.hpp>
 
-int main() {
+namespace {
+
+extern "C" int main() {
   glfwSetErrorCallback(glfw_error_callback);
 
   try {
@@ -39,7 +41,6 @@ int main() {
   return EXIT_SUCCESS;
 }
 
-namespace {
 void glfw_error_callback(int error, const char* description) {
   std::cout << "GLFW Error " << error << ": " << description << std::endl;
 }
