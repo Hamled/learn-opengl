@@ -2,9 +2,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-static int with_window(std::function<  int(GLFWwindow*) > block);
-static void glfw_error_callback(int error, const char* description);
-static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+namespace {
+int with_window(std::function<  int(GLFWwindow*) > block);
+void glfw_error_callback(int error, const char* description);
+void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+}
 
 int main() {
   glfwSetErrorCallback(glfw_error_callback);
@@ -40,6 +42,7 @@ int main() {
   std::exit(res);
 }
 
+namespace {
 void glfw_error_callback(int error, const char* description) {
   std::cout << "GLFW Error " << error << ": " << description << std::endl;
 }
@@ -82,3 +85,5 @@ int with_window(std::function< int(GLFWwindow*) > block) {
 
   return res;
 }
+
+} // namespace
