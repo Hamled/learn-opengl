@@ -33,10 +33,10 @@ int main() {
     });
   } catch(const std::exception &e) {
     std::cout << "Exiting with failure: " << e.what() << std::endl;
-    std::exit(EXIT_FAILURE);
+    return EXIT_FAILURE;
   }
 
-  std::exit(EXIT_SUCCESS);
+  return EXIT_SUCCESS;
 }
 
 namespace {
