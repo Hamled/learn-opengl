@@ -11,7 +11,7 @@ int main() {
   // Initialize GLFW
   if(!glfwInit()) {
     std::cout << "Unable to initialize GLFW!" << std::endl;
-    return 1;
+    std::exit(EXIT_FAILURE);
   }
   std::cout << "GLFW initialized successfully." << std::endl;
 
@@ -23,11 +23,11 @@ int main() {
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
   // Create the window
-  GLFWwindow* window = glfwCreateWindow(640, 480, "Learn OpenGL", NULL, NULL);
-  if(!window) {
+  const auto window = glfwCreateWindow(640, 480, "Learn OpenGL", nullptr, nullptr);
+  if(window == nullptr) {
     std::cout << "Unable to create OpenGL context!" << std::endl;
     glfwTerminate();
-    return 1;
+    std::exit(EXIT_FAILURE);
   }
 
   // Use the window's OpenGL context
@@ -38,7 +38,7 @@ int main() {
     std::cout << "Unable to create OpenGL context!" << std::endl;
     glfwDestroyWindow(window);
     glfwTerminate();
-    return 1;
+    std::exit(EXIT_FAILURE);
   }
 
   // Listen for key events
@@ -58,7 +58,7 @@ int main() {
 
   glfwDestroyWindow(window);
   glfwTerminate();
-  return 0;
+  std::exit(EXIT_SUCCESS);
 }
 
 void glfw_error_callback(int error, const char* description) {
