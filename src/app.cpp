@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 
 void glfw_error_callback(int error, const char* description);
+void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main() {
   glfwSetErrorCallback(glfw_error_callback);
@@ -39,6 +40,9 @@ int main() {
     return 1;
   }
 
+  // Listen for key events
+  glfwSetKeyCallback(window, glfw_key_callback);
+
   // Setup the viewport
   int width, height;
   glfwGetFramebufferSize(window, &width, &height);
@@ -58,4 +62,10 @@ int main() {
 
 void glfw_error_callback(int error, const char* description) {
   std::cout << "GLFW Error " << error << ": " << description << std::endl;
+}
+
+void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+  if(action == GLFW_PRESS && key == GLFW_KEY_ESCAPE) {
+    glfwSetWindowShouldClose(window, GLFW_TRUE);
+  }
 }
