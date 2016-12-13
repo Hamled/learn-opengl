@@ -39,6 +39,18 @@ int main() {
     return 1;
   }
 
+  // Setup the viewport
+  int width, height;
+  glfwGetFramebufferSize(window, &width, &height);
+  glViewport(0, 0, width, height);
+
+  // Loop until the window should close
+  while(!glfwWindowShouldClose(window)) {
+    // We must wait for events or this
+    // spinloop will prevent anything from happening
+    glfwWaitEvents();
+  }
+
   glfwDestroyWindow(window);
   glfwTerminate();
   return 0;
