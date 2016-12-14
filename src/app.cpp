@@ -28,9 +28,16 @@ extern "C" int main() {
 
       // Loop until the window should close
       while(!glfwWindowShouldClose(window)) {
-        // We must wait for events or this
-        // spinloop will prevent anything from happening
-        glfwWaitEvents();
+        // Handle any events that have happened since the last frame
+        glfwPollEvents();
+
+        // Render the new frame
+        //   For now we just clear the color buffer
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Display the new frame
+        glfwSwapBuffers(window);
       }
     });
   } catch(const std::exception &e) {
