@@ -28,6 +28,7 @@ extern "C" int main() {
 
       // Create and compile our shaders and shader program
       const GLuint vertShader = buildVertShader();
+      const GLuint fragShader = buildFragShader();
 
       // Loop until the window should close
       while(!glfwWindowShouldClose(window)) {
@@ -100,6 +101,34 @@ GLuint buildVertShader() {
   }
 
   return vertShader;
+}
+
+GLuint buildFragShader() {
+  const auto fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+  const auto fg_glsl = R"glsl(
+  #version 330 core
+
+  out vec4 color;
+
+  void main() {
+    color = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+  }
+  )glsl";
+
+  glShaderSource(fragShader, 1, &fg_glsl, NULL);
+  glCompileShader(fragShader);
+
+  auto success = 0;
+  glGetShaderiv(fragShader, GL_COMPILE_STATUS, &success);
+
+  if(!success) {
+    GLchar msg[512] = {0};
+    glGetShaderInfoLog(fragShader, 511, NULL, msg);
+    std::cout << "Unable to compile fragment shader: " << msg << std::endl;
+    throw std::runtime_error("Error building shaders");
+  }
+
+  return fragShader;
 }
 
 } // namespace

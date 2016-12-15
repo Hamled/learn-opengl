@@ -45,6 +45,7 @@ template<typename WindowBlock> void with_window(WindowBlock &&block) {
 }
 
 GLuint buildVertShader();
+GLuint buildFragShader();
 
 } // namespace
 
