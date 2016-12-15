@@ -32,9 +32,22 @@ extern "C" int main() {
         glfwPollEvents();
 
         // Render the new frame
-        //   For now we just clear the color buffer
+        //   Start off by clearing the color buffer
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        //   Next render a single triangle
+        //     First create and fill a vertex buffer
+        const GLuint VBO = 0;
+        glGenBuffers(1, const_cast<GLuint*>(&VBO));
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        const GLfloat vertices[] = {
+          -0.5f, -0.5f, 0.f,
+           0.5f, -0.5f, 0.f,
+           0.5f,  0.5f, 0.f
+        };
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
         // Display the new frame
         glfwSwapBuffers(window);
