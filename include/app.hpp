@@ -44,6 +44,8 @@ template<typename WindowBlock> void with_window(WindowBlock &&block) {
   block(window.get());
 }
 
+GLuint buildVertShader();
+
 } // namespace
 
 #endif

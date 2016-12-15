@@ -26,6 +26,9 @@ extern "C" int main() {
       glfwGetFramebufferSize(window, &width, &height);
       glViewport(0, 0, width, height);
 
+      // Create and compile our shaders and shader program
+      const GLuint vertShader = buildVertShader();
+
       // Loop until the window should close
       while(!glfwWindowShouldClose(window)) {
         // Handle any events that have happened since the last frame
@@ -70,4 +73,33 @@ void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, in
     glfwSetWindowShouldClose(window, GLFW_TRUE);
   }
 }
+
+GLuint buildVertShader() {
+  const auto vertShader = glCreateShader(GL_VERTEX_SHADER);
+  const auto vs_glsl = R"glsl(
+  #version 330 core
+
+  layout (location = 0) in vec3 pos;
+
+  void main() {
+    gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
+  }
+  )glsl";
+
+  glShaderSource(vertShader, 1, &vs_glsl, NULL);
+  glCompileShader(vertShader);
+
+  auto success = 0;
+  glGetShaderiv(vertShader, GL_COMPILE_STATUS, &success);
+
+  if(!success) {
+    GLchar msg[512] = {0};
+    glGetShaderInfoLog(vertShader, 511, NULL, msg);
+    std::cout << "Unable to compile vertex shader: " << msg << std::endl;
+    throw std::runtime_error("Error building shaders");
+  }
+
+  return vertShader;
+}
+
 } // namespace
