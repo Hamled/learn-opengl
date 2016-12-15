@@ -34,6 +34,23 @@ extern "C" int main() {
       glDeleteShader(vertShader);
       glDeleteShader(fragShader);
 
+      // Create and configure our vertex buffer and array objects
+      GLuint VBO = 0;
+      glGenBuffers(1, &VBO);
+      // First fill the vertex buffer
+      glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+      const GLfloat vertices[] = {
+        -0.5f, -0.5f, 0.f,
+         0.5f, -0.5f, 0.f,
+         0.5f,  0.5f, 0.f
+      };
+      glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+      // Then configure that buffer
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+      glEnableVertexAttribArray(0);
+
       // Loop until the window should close
       while(!glfwWindowShouldClose(window)) {
         // Handle any events that have happened since the last frame
@@ -45,23 +62,7 @@ extern "C" int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         //   Next render a single triangle
-        //     First create and fill a vertex buffer
-        const GLuint VBO = 0;
-        glGenBuffers(1, const_cast<GLuint*>(&VBO));
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-        const GLfloat vertices[] = {
-          -0.5f, -0.5f, 0.f,
-           0.5f, -0.5f, 0.f,
-           0.5f,  0.5f, 0.f
-        };
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-        //     Then configure that buffer
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-        glEnableVertexAttribArray(0);
-
-        //     Next setup the shader program
+        //     Setup the shader program
         glUseProgram(shaderProg);
 
         // Display the new frame
