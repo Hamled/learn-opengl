@@ -45,7 +45,7 @@ extern "C" int main() {
         const GLfloat vertices[] = {
           -0.5f, -0.5f, 0.f,
            0.5f, -0.5f, 0.f,
-           0.5f,  0.5f, 0.f
+           0.0f,  0.5f, 0.f
         };
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
