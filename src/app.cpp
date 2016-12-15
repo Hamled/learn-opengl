@@ -29,6 +29,10 @@ extern "C" int main() {
       // Create and compile our shaders and shader program
       const GLuint vertShader = buildVertShader();
       const GLuint fragShader = buildFragShader();
+      const GLuint shaderProg = buildShaderProg(vertShader, fragShader);
+      // Delete the shaders since they've been linked
+      glDeleteShader(vertShader);
+      glDeleteShader(fragShader);
 
       // Loop until the window should close
       while(!glfwWindowShouldClose(window)) {
@@ -52,6 +56,9 @@ extern "C" int main() {
            0.5f,  0.5f, 0.f
         };
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        //     Next setup the shader program
+        glUseProgram(shaderProg);
 
         // Display the new frame
         glfwSwapBuffers(window);
@@ -129,6 +136,26 @@ GLuint buildFragShader() {
   }
 
   return fragShader;
+}
+
+GLuint buildShaderProg(const GLuint vertShader, const GLuint fragShader) {
+  const auto shaderProg = glCreateProgram();
+
+  glAttachShader(shaderProg, vertShader);
+  glAttachShader(shaderProg, fragShader);
+  glLinkProgram(shaderProg);
+
+  auto success = 0;
+  glGetProgramiv(shaderProg, GL_LINK_STATUS, &success);
+
+  if(!success) {
+    GLchar msg[512] = {0};
+    glGetShaderInfoLog(shaderProg, 511, NULL, msg);
+    std::cout << "Unable to link shader program: " << msg << std::endl;
+    throw std::runtime_error("Error building shaders");
+  }
+
+  return shaderProg;
 }
 
 } // namespace
