@@ -73,6 +73,7 @@ extern "C" int main() {
         glBindVertexArray(VAO);
 
         //     Actually render
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         //     Unbind the vertex array
         glBindVertexArray(NULL);
