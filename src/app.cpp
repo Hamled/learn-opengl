@@ -56,8 +56,7 @@ extern "C" int main() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
         const GLuint indices[] = {
-          0, 2, 3, // First triangle
-          3, 0, 1  // Second triangle
+          2, 3, 0, 1 // Both triangles
         };
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
@@ -85,7 +84,7 @@ extern "C" int main() {
         glBindVertexArray(VAO);
 
         //     Actually render
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 
         //     Unbind the vertex array
         glBindVertexArray(NULL);
