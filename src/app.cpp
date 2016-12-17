@@ -118,8 +118,11 @@ GLuint buildVertShader() {
 
   layout (location = 0) in vec3 pos;
 
+  out vec4 vertexColor;
+
   void main() {
-    gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
+    gl_Position = vec4(pos, 1.0f);
+    vertexColor = vec4(pos.y, pos.x, pos.z, 1.0f);
   }
   )glsl";
 
@@ -144,10 +147,12 @@ GLuint buildFragShader() {
   const auto fg_glsl = R"glsl(
   #version 330 core
 
+  in vec4 vertexColor;
+
   out vec4 color;
 
   void main() {
-    color = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    color = vertexColor;
   }
   )glsl";
 
