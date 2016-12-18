@@ -34,6 +34,9 @@ extern "C" int main() {
       glDeleteShader(vertShader);
       glDeleteShader(fragShader);
 
+      // Get a handle to the uniform variable in our shader program
+      const GLint timeUniLoc = glGetUniformLocation(shaderProg, "time");
+
       // Create and configure our vertex buffer and array objects
       GLuint VAO = 0, VBO = 0, EBO = 0;
       glGenVertexArrays(1, &VAO);
@@ -79,6 +82,7 @@ extern "C" int main() {
         //   Next render a single triangle
         //     Setup the shader program
         glUseProgram(shaderProg);
+        glUniform1f(timeUniLoc, static_cast<GLfloat>(glfwGetTime()));
 
         //     Use the vertex array
         glBindVertexArray(VAO);
@@ -118,11 +122,8 @@ GLuint buildVertShader() {
 
   layout (location = 0) in vec3 pos;
 
-  out vec4 vertexColor;
-
   void main() {
     gl_Position = vec4(pos, 1.0f);
-    vertexColor = vec4(pos.y, pos.x, pos.z, 1.0f);
   }
   )glsl";
 
@@ -147,12 +148,14 @@ GLuint buildFragShader() {
   const auto fg_glsl = R"glsl(
   #version 330 core
 
-  in vec4 vertexColor;
-
   out vec4 color;
 
+  uniform float time;
+
   void main() {
-    color = vertexColor;
+    float red   = (sin(time) / 2) + 0.5f;
+    float green = (cos(time) / 2) + 0.5f;
+    color = vec4(red, green, 0.f, 1.0f);
   }
   )glsl";
 
