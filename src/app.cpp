@@ -180,7 +180,8 @@ GLuint buildFragShader() {
   void main() {
     float red   = (sin(time) / 2.f) + 0.5f;
     float green = (cos(time) / 2.f) + 0.5f;
-    vec3 baseColor = vec3(red, green, 0.f);
+    float blue  = (red + green) / 2.f;
+    vec3 baseColor = vec3(red, green, blue);
     vec3 texColor = texture(diffuseTex, vertTexCoord).xyz;
 
     color = vec4((baseColor + vertColor) * texColor, 1.f);
