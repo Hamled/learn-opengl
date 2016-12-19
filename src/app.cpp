@@ -136,12 +136,15 @@ GLuint buildVertShader() {
 
   layout (location = 0) in vec3 pos;
   layout (location = 1) in vec3 colorDelta;
+  layout (location = 2) in vec2 texCoord;
 
   out vec3 vertColor;
+  out vec2 vertTexCoord;
 
   void main() {
     gl_Position = vec4(pos, 1.0f);
     vertColor = colorDelta;
+    vertTexCoord = texCoord;
   }
   )glsl";
 
@@ -167,15 +170,20 @@ GLuint buildFragShader() {
   #version 330 core
 
   in vec3 vertColor;
+  in vec2 vertTexCoord;
 
   out vec4 color;
 
   uniform float time;
+  uniform sampler2D diffuseTex;
 
   void main() {
-    float red   = (sin(time) / 2) + 0.5f;
-    float green = (cos(time) / 2) + 0.5f;
-    color = vec4(red + vertColor.x, green + vertColor.y, 0.f + vertColor.z, 1.0f);
+    float red   = (sin(time) / 2.f) + 0.5f;
+    float green = (cos(time) / 2.f) + 0.5f;
+    vec3 baseColor = vec3(red, green, 0.f);
+    vec3 texColor = texture(diffuseTex, vertTexCoord).xyz;
+
+    color = vec4((baseColor + vertColor) * texColor, 1.f);
   }
   )glsl";
 
