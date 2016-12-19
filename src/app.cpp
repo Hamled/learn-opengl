@@ -3,6 +3,9 @@
 #include <glad/glad.h>
 #include <app.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 namespace {
 
 extern "C" int main() {
@@ -202,6 +205,53 @@ GLuint buildShaderProg(const GLuint vertShader, const GLuint fragShader) {
   }
 
   return shaderProg;
+}
+
+GLuint loadTexture(const char* filename) {
+  // Load the image data from a file
+  const auto imageCleanup = [](const auto image) {
+    stbi_image_free(image);
+  };
+
+  const int req_channels = 3; // RGB
+  int width, height, channels;
+  const std::unique_ptr<stbi_uc, decltype(imageCleanup)> image(
+    stbi_load(filename, &width, &height, &channels, req_channels),
+    imageCleanup
+  );
+
+  if(!image) {
+    std::cout << "Unable to load image '" << filename << "' "
+              << "for texture: " << stbi_failure_reason() << std::endl;
+    throw std::runtime_error("Error loading texture");
+  }
+
+  // Use the image data to create a texture
+  GLuint texture;
+  glGenTextures(1, &texture);
+
+  glBindTexture(GL_TEXTURE_2D, texture);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image.get());
+
+  // Generate all mipmap levels for the texture
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  // We're done with the texture for now
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  bool gotError = false;
+  GLenum glError = GL_NO_ERROR;
+  while((glError = glGetError()) != GL_NO_ERROR) {
+    std::cout << "Unable to create texture from image '" << filename << "' "
+              << "due to GL error: " << glError << std::endl;
+    gotError = true;
+  }
+
+  if(gotError) {
+    throw std::runtime_error("Error loading texture");
+  }
+
+  return texture;
 }
 
 } // namespace

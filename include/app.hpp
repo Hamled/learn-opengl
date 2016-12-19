@@ -48,6 +48,8 @@ GLuint buildVertShader();
 GLuint buildFragShader();
 GLuint buildShaderProg(const GLuint vertShader, const GLuint fragShader);
 
+GLuint loadTexture(const char* filename);
+
 } // namespace
 
 #endif
