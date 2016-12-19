@@ -74,6 +74,9 @@ extern "C" int main() {
         glEnableVertexAttribArray(1);
       glBindVertexArray(NULL);
 
+      // Load texture from JPG file
+      const GLuint texture = loadTexture("../resources/container.jpg");
+
 
       // Loop until the window should close
       while(!glfwWindowShouldClose(window)) {
@@ -89,6 +92,9 @@ extern "C" int main() {
         //     Setup the shader program
         glUseProgram(shaderProg);
         glUniform1f(timeUniLoc, static_cast<GLfloat>(glfwGetTime()));
+
+        //     Use the texture
+        glBindTexture(GL_TEXTURE_2D, texture);
 
         //     Use the vertex array
         glBindVertexArray(VAO);
