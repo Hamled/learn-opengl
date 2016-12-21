@@ -76,8 +76,9 @@ extern "C" int main() {
         glEnableVertexAttribArray(2);
       glBindVertexArray(NULL);
 
-      // Load texture from JPG file
-      const GLuint texture = loadTexture("../resources/container.jpg");
+      // Load textures
+      const GLuint containerTex = loadTexture("../resources/container.jpg");
+      const GLuint faceTex = loadTexture("../resources/awesomeface.png");
 
 
       // Loop until the window should close
@@ -95,9 +96,14 @@ extern "C" int main() {
         glUseProgram(shaderProg);
         glUniform1f(timeUniLoc, static_cast<GLfloat>(glfwGetTime()));
 
-        //     Use the texture
+        //     Use the textures
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, containerTex);
+        glUniform1i(glGetUniformLocation(shaderProg, "containerTex"), 0);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, faceTex);
+        glUniform1i(glGetUniformLocation(shaderProg, "faceTex"), 1);
 
         //     Use the vertex array
         glBindVertexArray(VAO);
@@ -176,14 +182,18 @@ GLuint buildFragShader() {
   out vec4 color;
 
   uniform float time;
-  uniform sampler2D diffuseTex;
+  uniform sampler2D containerTex;
+  uniform sampler2D faceTex;
 
   void main() {
     float red   = (sin(time) / 2.f) + 0.5f;
     float green = (cos(time) / 2.f) + 0.5f;
     float blue  = (red + green) / 2.f;
     vec3 baseColor = vec3(red, green, blue);
-    vec3 texColor = texture(diffuseTex, vertTexCoord).xyz;
+
+    vec3 containerColor = texture(containerTex, vertTexCoord).xyz;
+    vec3 faceColor = texture(faceTex, vertTexCoord).xyz;
+    vec3 texColor = mix(containerColor, faceColor, 0.2f);
 
     color = vec4((baseColor + vertColor) * texColor, 1.f);
   }
