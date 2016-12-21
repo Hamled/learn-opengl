@@ -192,7 +192,7 @@ GLuint buildFragShader() {
     vec3 baseColor = vec3(red, green, blue);
 
     vec3 containerColor = texture(containerTex, vertTexCoord).xyz;
-    vec3 faceColor = texture(faceTex, vertTexCoord).xyz;
+    vec3 faceColor = texture(faceTex, vec2(vertTexCoord.x, 1.f - vertTexCoord.y)).xyz;
     vec3 texColor = mix(containerColor, faceColor, 0.2f);
 
     color = vec4((baseColor + vertColor) * texColor, 1.f);
