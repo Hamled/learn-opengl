@@ -96,6 +96,7 @@ extern "C" int main() {
         glUniform1f(timeUniLoc, static_cast<GLfloat>(glfwGetTime()));
 
         //     Use the texture
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
 
         //     Use the vertex array
